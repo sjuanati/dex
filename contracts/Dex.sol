@@ -97,7 +97,7 @@ contract Dex {
             'token balance too low');
         } else {
             require(traderBalances[msg.sender][DAI] >= _amount.mul(_price),
-            'dai balance to low');
+            'dai balance too low');
         }
         Order[] storage orders = orderBook[_ticker][uint256(_side)];
         orders.push(Order(
