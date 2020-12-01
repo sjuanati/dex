@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
-import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol';
-import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol';
+//import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol';
+//import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts/math/SafeMath.sol';
 
 /*
 ** Remark on mapping(bytes32 => mapping(uint256 => Order[])) public orderBook;
@@ -211,9 +213,6 @@ contract Dex {
         Token[] memory _tokens = new Token[](tokenList.length);
         for (uint256 i = 0; i < tokenList.length; i++) {
             _tokens[i] = Token(
-                //tokens[tokenList[i]].id,
-                //tokens[tokenList[i]].symbol,
-                //tokens[tokenList[i]].at
                 tokens[tokenList[i]].ticker,
                 tokens[tokenList[i]].tokenAddress
             );
