@@ -7,7 +7,12 @@ const Dex = artifacts.require('Dex.sol');
 const [DAI, BAT, REP, ZRX] = ['DAI', 'BAT', 'REP', 'ZRX']
     .map(ticker => web3.utils.fromAscii(ticker));
 
-module.exports = async (deployer) => {
+module.exports = async (deployer, _network, accounts) => {
+
+    // Get User accounts
+    const [trader1, trader2, trader3, trader4, _] = accounts;
+
+    // Initialize contracts
     await Promise.all(
         [Dai, Bat, Rep, Zrx, Dex].map(contract => deployer.deploy(contract))
     );
@@ -20,4 +25,33 @@ module.exports = async (deployer) => {
         dex.addToken(REP, rep.address),
         dex.addToken(ZRX, zrx.address)
     ]);
+
+    // Set initial balance to traders for all tokens
+    const amount = web3.utils.toWei('1000');
+    const seedTokenBalance = async (token, trader) => {
+        await token.faucet(trader, amount);
+        await token.approve(
+            dex.address,
+            amount,
+            { from: trader }
+        );
+        const ticker = await token.name();
+        await dex.deposit(
+            amount,
+            web3.utils.fromAscii(ticker),
+            {from: trader}
+        );
+    };
+    await Promise.all(
+        [dai, bat, rep, zrx].map(token => seedTokenBalance(token, trader1))
+    );
+    await Promise.all(
+        [dai, bat, rep, zrx].map(token => seedTokenBalance(token, trader2))
+    );
+    await Promise.all(
+        [dai, bat, rep, zrx].map(token => seedTokenBalance(token, trader3))
+    );
+    await Promise.all(
+        [dai, bat, rep, zrx].map(token => seedTokenBalance(token, trader4))
+    );
 }
