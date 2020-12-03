@@ -2,10 +2,10 @@
 import React from 'react';
 import Header from './Header';
 import Wallet from './Wallet';
-import { User } from './interfaces/User';
+import { User, Token } from './interfaces/Interfaces';
 
-function App({ web3, accounts, contracts }: { web3: any, accounts: any, contracts: any }) {
-	const [tokens, setTokens] = React.useState([]);
+function App({ web3, accounts, contracts }: { web3: any, accounts: string[], contracts: any }) {
+	const [tokens, setTokens] = React.useState<Token[]>([]);
 	const [user, setUser] = React.useState<User>({
 		accounts: [],
 		balances: {
@@ -20,7 +20,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: any, contract
 		}
 	});
 
-	const getBalances = async (account: any, token: any) => {
+	const getBalances = async (account: string, token: Token) => {
 		const tokenDex = await contracts.dex.methods
 			.traderBalances(account, web3.utils.fromAscii(token.ticker))
 			.call();
@@ -30,7 +30,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: any, contract
 		return { tokenDex, tokenWallet };
 	}
 
-	const selectToken = (token: any) => {
+	const selectToken = (token: Token) => {
 		setUser({ ...user, selectedToken: token })
 	};
 
@@ -68,7 +68,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: any, contract
 	React.useEffect(() => {
 		const init = async () => {
 			const rawTokens = await contracts.dex.methods.getTokens().call();
-			const tokens = rawTokens.map((token: any) => ({
+			const tokens = rawTokens.map((token: Token) => ({
 				...token,
 				ticker: web3.utils.hexToUtf8(token.ticker)
 			}));
@@ -82,7 +82,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: any, contract
 	if (user.selectedToken.ticker === '') {
 		return <div>Loading...</div>
 	} else {
-		console.log('selectedToken:', user.selectedToken)
+		console.log('contracts:', contracts)
 	}
 
 	return (

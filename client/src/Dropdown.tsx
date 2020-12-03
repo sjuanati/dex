@@ -1,6 +1,7 @@
 import React from 'react';
+import {DropdownItem} from './interfaces/Interfaces';
 
-const Dropbown = ({ onSelect, activeItem, items }: { onSelect: any, activeItem: any, items: any }) => {
+const Dropbown = ({ onSelect, activeItem, items }: { onSelect: any, activeItem: DropdownItem, items: DropdownItem[] }) => {
     const [dropdownVisible, setDropdownVisible] = React.useState<boolean>(false);
 
     const selectItem = (e: any, item: any) => {

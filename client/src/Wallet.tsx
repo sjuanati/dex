@@ -1,11 +1,14 @@
 import React from 'react';
+import { User } from './interfaces/Interfaces'
 
 const DIRECTION = {
     WITHDRAW: 'WITHDRAW',
     DEPOSIT: 'DEPOSIT'
 };
 
-const Wallet = ({ deposit, withdraw, user }: { deposit: any, withdraw: any, user: any}) => {
+const Wallet = ({ deposit, withdraw, user }:
+    { deposit: any, withdraw: any, user: User }) => {
+
     const [direction, setDirection] = React.useState<string>(DIRECTION.DEPOSIT);
     const [amount, setAmount] = React.useState<number>(0);
 
