@@ -10,12 +10,12 @@ const Header = ({
     user: any,
     tokens: any,
     contracts: any,
-    selectToken(token: any): any 
+    //selectToken(token: any): any 
+    selectToken: any
 }) => {
     console.log('tokens: ', tokens)
     return (
         <head id='header' className='card'>
-            Hola
             <div className='row'>
                 <div className='col-sm-3 flex'>
                 <Dropdown 
