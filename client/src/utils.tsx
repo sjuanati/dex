@@ -42,19 +42,20 @@ const getWeb3 = () => {
 
 
 const getContracts = async (web3: any) => {
-	let networkId = await web3.eth.net.getId();
-	console.log('networkId: ', networkId)
-	const deployedContract = Dex.networks['5777'];
-	//console.log('deployedContract:', deployedContract);
+	//let networkId = await web3.eth.net.getId();
 	//const deployedContract = Dex.networks[networkId];
+
+	// DEX contract
+	const deployedContract = Dex.networks['5777'];
 	const dex = new web3.eth.Contract(
 		Dex.abi,
 		deployedContract && deployedContract.address,
 	);
+	// ERC20 token contracts
 	const tokens = await dex.methods.getTokens().call();
 	const tokenContracts = tokens.reduce((acc: any, token: any) => ({ // return
 		...acc,
-		[web3.utils.hexToUtf8(token.ticker)]: new web3.eth.Contract(
+		[web3.utils.hexToUtf8(token.ticker)]: new web3.eth.Contract( //hexToUtf8: to from bytes32 to ASCII
 			ERC20Abi,
 			token.tokenAddress
 		)
