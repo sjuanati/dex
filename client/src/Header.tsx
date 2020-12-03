@@ -10,10 +10,8 @@ const Header = ({
     user: any,
     tokens: any,
     contracts: any,
-    //selectToken(token: any): any 
-    selectToken: any
+    selectToken(token: any): any 
 }) => {
-    console.log('tokens: ', tokens)
     return (
         <head id='header' className='card'>
             <div className='row'>
