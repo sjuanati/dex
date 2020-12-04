@@ -4,7 +4,8 @@ import Header from './Header';
 import Wallet from './Wallet';
 import NewOrder from './NewOrder';
 import AllOrders from './AllOrders';
-import { User, Token, Side } from './interfaces/Interfaces';
+import MyOrders from './MyOrders';
+import { User, Token, Side, Order } from './interfaces/Interfaces';
 
 const SIDE = {
 	BUY: 0,
@@ -26,7 +27,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 			address: ''
 		}
 	});
-	const [orders, setOrders] = React.useState({
+	const [orders, setOrders] = React.useState<Order>({
 		buy: [],
 		sell: []
 	});
@@ -152,7 +153,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 	if (user.selectedToken.ticker === '') {
 		return <div>Loading...</div>
 	} else {
-		console.log('contracts:', contracts)
+		console.log('orders:', orders)
 	}
 
 	return (
@@ -184,6 +185,16 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 							<div className='col-sm-8'>
 								<AllOrders 
 									orders={orders}
+								/>
+								<MyOrders 
+									orders={{
+										buy: orders.buy.filter(
+											order => order.trader.toLowerCase() === user.accounts[0].toLocaleLowerCase()
+										),
+										sell: orders.sell.filter(
+											order => order.trader.toLowerCase() === user.accounts[0].toLocaleLowerCase()
+										),
+									}}
 								/>
 							</div>
 						)

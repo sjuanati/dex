@@ -1,7 +1,8 @@
 import React from 'react';
 import Moment from 'react-moment';
+import { Order } from './interfaces/Interfaces';
 
-const AllOrders = ({ orders }: { orders: any }) => {
+const AllOrders = ({ orders }: { orders: Order }) => {
 
     const renderList = (orders: any, side: any, className: any) => (
         <>
