@@ -19,3 +19,12 @@ export interface DropdownItem {
     value: Token
 };
 
+export interface Side {
+    BUY: number,
+    SELL: number
+}
+
+export interface Type {
+    LIMIT: string,
+    MARKET: string
+}

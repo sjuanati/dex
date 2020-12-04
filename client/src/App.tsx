@@ -2,7 +2,13 @@
 import React from 'react';
 import Header from './Header';
 import Wallet from './Wallet';
-import { User, Token } from './interfaces/Interfaces';
+import NewOrder from './NewOrder';
+import { User, Token, Side } from './interfaces/Interfaces';
+
+const SIDE = {
+	BUY: 0,
+	SELL: 1,
+}
 
 function App({ web3, accounts, contracts }: { web3: any, accounts: string[], contracts: any }) {
 	const [tokens, setTokens] = React.useState<Token[]>([]);
@@ -65,6 +71,28 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 		setUser(user => ({ ...user, balances }));
 	};
 
+	const createMarketOrder = async (amount: number, side: Side) => {
+		await contracts.dex.methods
+			.createMarketOrder(
+				web3.utils.fromAscii(user.selectedToken.ticker),
+				amount,
+				side
+			)
+			.send({ from: user.accounts[0] });
+	};
+
+	const createLimitOrder = async (amount: number, price: number, side: Side) => {
+		console.log('inside limit order')
+		await contracts.dex.methods
+			.createLimitOrder(
+				web3.utils.fromAscii(user.selectedToken.ticker),
+				amount,
+				price,
+				side
+			)
+			.send({ from: user.accounts[0] });
+	};
+
 	React.useEffect(() => {
 		const init = async () => {
 			const rawTokens = await contracts.dex.methods.getTokens().call();
@@ -101,6 +129,13 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 							deposit={deposit}
 							withdraw={withdraw}
 						/>
+						{/* only if not DAI is selected */}
+						{(user.selectedToken.ticker !== 'DAI')
+							? (<NewOrder
+								createMarketOrder={createMarketOrder}
+								createLimitOrder={createLimitOrder}
+							/>)
+							: null}
 					</div>
 				</div>
 			</main>
