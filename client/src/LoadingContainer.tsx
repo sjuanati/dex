@@ -1,9 +1,10 @@
 import React from 'react';
+import Web3 from 'web3';
 import { getWeb3, getContracts } from './utils';
 import App from './App';
 
 const LoadingContainer = () => {
-    const [web3, setWeb3] = React.useState<any>();
+    const [web3, setWeb3] = React.useState<Web3>();
     const [accounts, setAccounts] = React.useState<string[]>([]);
     const [contracts, setContracts] = React.useState(undefined);
 

@@ -44,6 +44,17 @@ export interface OrderItem {
     date: number,
 };
 
+export interface Trade {
+    tradeId: number,
+    orderId: number,
+    ticker: string,
+    trader1: string,
+    trader2: string,
+    amount: number,
+    price: number,
+    date: string
+}
+
 export interface DropdownItem {
     label: string,
     value: Token
