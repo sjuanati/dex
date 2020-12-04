@@ -13,7 +13,14 @@ const SIDE = {
 	SELL: 1,
 }
 
-function App({ web3, accounts, contracts }: { web3: any, accounts: string[], contracts: any }) {
+const App = ({
+	web3,
+	accounts,
+	contracts }: {
+		web3: any,
+		accounts: string[],
+		contracts: any
+	}) => {
 	const [tokens, setTokens] = React.useState<Token[]>([]);
 	const [user, setUser] = React.useState<User>({
 		accounts: [],
@@ -58,7 +65,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 		return { buy: orders[0], sell: orders[1] };
 	};
 
-	const listenToTrades = (token: Token) => {
+	const listenToTrades = (token: Token): void => {
 		const tradeIds = new Set(); // Set() is equivalent to array but with unique values
 		setTrades([]); // Start with clean state in case the users changes to another token
 		const listener = contracts.dex.events.NewTrade({
@@ -74,8 +81,8 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 		setListener(listener);
 	};
 
-	const selectToken = (token: Token) => {
-		setUser({ ...user, selectedToken: token })
+	const selectToken = (token: Token): void => {
+		setUser({ ...user, selectedToken: token });
 	};
 
 	const deposit = async (amount: number) => {
@@ -174,13 +181,11 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 			init();
 		};
 		// return () => {listener.unsubscribe();}
-	  },[user.selectedToken]);	
+	}, [user.selectedToken]);
 
 	if (user.selectedToken.ticker === '') {
-		return <div>Loading...</div>
-	} else {
-		console.log('orders:', orders)
-	}
+		return <div>Loading...</div>;
+	};
 
 	return (
 		<div id='app'>
@@ -209,7 +214,7 @@ function App({ web3, accounts, contracts }: { web3: any, accounts: string[], con
 					{(user.selectedToken.ticker !== 'DAI')
 						? (
 							<div className='col-sm-8'>
-								<AllTrades 
+								<AllTrades
 									trades={trades}
 								/>
 								<AllOrders

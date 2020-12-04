@@ -1,10 +1,9 @@
-import React from 'react';
 import Moment from 'react-moment';
 import { Order } from './interfaces/Interfaces';
 
 const AllOrders = ({ orders }: { orders: Order }) => {
 
-    const renderList = (orders: any, side: any, className: any) => (
+    const renderList = (orders: any, side: string, className: string) => (
         <>
             <table className={`table table-striped mb-0 order-list ${className}`}>
                 <thead>
@@ -31,7 +30,6 @@ const AllOrders = ({ orders }: { orders: Order }) => {
             </table>
         </>
     );
-
 
     return (
         <div className="card">

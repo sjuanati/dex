@@ -1,14 +1,22 @@
 import React from 'react';
-import {DropdownItem} from './interfaces/Interfaces';
+import { DropdownItem } from './interfaces/Interfaces';
 
-const Dropbown = ({ onSelect, activeItem, items }: { onSelect: any, activeItem: DropdownItem, items: DropdownItem[] }) => {
+const Dropbown = ({
+    onSelect,
+    activeItem,
+    items }: {
+        onSelect: any,
+        activeItem: DropdownItem,
+        items: DropdownItem[]
+    }) => {
     const [dropdownVisible, setDropdownVisible] = React.useState<boolean>(false);
 
     const selectItem = (e: any, item: any) => {
         e.preventDefault();
         setDropdownVisible(!dropdownVisible);
         onSelect(item);
-    }
+    };
+
     return (
         <div className={'dropdown ml-3'}>
             <button
@@ -19,7 +27,7 @@ const Dropbown = ({ onSelect, activeItem, items }: { onSelect: any, activeItem: 
                 {activeItem.label}
             </button>
             <div className={`dropdown-menu ${dropdownVisible ? 'visible' : ''}`}>
-                {items && items.map((item: any, i: any) => (
+                {items && items.map((item: DropdownItem, i: number) => (
                     <a
                         className={`dropdown-item ${item.value === activeItem.value ? 'active' : null}`}
                         href='/#'

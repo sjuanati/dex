@@ -39,8 +39,6 @@ const getWeb3 = () => {
 	});
 };
 
-
-
 const getContracts = async (web3: any) => {
 	//let networkId = await web3.eth.net.getId();
 	//const deployedContract = Dex.networks[networkId];

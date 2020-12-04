@@ -1,4 +1,3 @@
-import React from 'react';
 import Moment from 'react-moment';
 import { Trade } from './interfaces/Interfaces';
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
