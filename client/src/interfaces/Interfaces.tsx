@@ -41,7 +41,7 @@ export interface OrderItem {
     amount: number,
     filled: number,
     price: number,
-    date: number,
+    date: string,
 };
 
 export interface Trade {

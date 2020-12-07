@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import { Order } from './interfaces/Interfaces';
+import { Order, OrderItem } from './interfaces/Interfaces';
 
 const AllOrders = ({ orders }: { orders: Order }) => {
 
@@ -17,7 +17,7 @@ const AllOrders = ({ orders }: { orders: Order }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map((order: any) => (
+                    {orders.map((order: OrderItem) => (
                         <tr key={order.id}>
                             <td>{order.amount - order.filled}</td>
                             <td>{order.price}</td>

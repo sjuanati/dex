@@ -25,7 +25,7 @@ const LoadingContainer = () => {
         typeof web3 !== 'undefined'
         && typeof contracts !== 'undefined'
         && accounts.length > 0
-    );
+    )
 
     if (!isReady()) {
         return <div> Loading... </div>

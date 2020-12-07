@@ -22,6 +22,15 @@ module.exports = {
 			),
 			network_id: 42,
 		},
+		ropsten: {
+			provider: () => new provider(
+				secrets.privateKeys,
+				`https://ropsten.infura.io/v3/${secrets.infuraKey}`,
+				0, // from address 0
+				3,  // to address 3
+			),
+			network_id: 3,
+		},
 	},
 
 	// Set default mocha options here, use special reporters etc.

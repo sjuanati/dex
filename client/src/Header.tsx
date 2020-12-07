@@ -14,7 +14,7 @@ const Header = ({
     selectToken(token: Token): void
 }) => {
     return (
-        <head id='header' className='card'>
+        <header id='header' className='card'>
             <div className='row'>
                 <div className='col-sm-3 flex'>
                     <Dropdown
@@ -36,7 +36,7 @@ const Header = ({
 
                 </div>
             </div>
-        </head>
+        </header>
     );
 };
 
