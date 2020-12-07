@@ -8,6 +8,11 @@ const secrets = JSON.parse(
 
 module.exports = {
 	networks: {
+		development: {
+			host: "127.0.0.1",
+			port: 9545,
+			network_id: "*",
+		},
 		ganachina: {
 			host: "127.0.0.1",
 			port: 7545,
@@ -15,7 +20,7 @@ module.exports = {
 		},
 		kovan: {
 			provider: () => new provider(
-				secrets.privateKeys,
+				secrets.privateKeysKovan,
 				`https://kovan.infura.io/v3/${secrets.infuraKey}`,
 				0, // from address 0
 				3,  // to address 3
@@ -24,10 +29,10 @@ module.exports = {
 		},
 		ropsten: {
 			provider: () => new provider(
-				secrets.privateKeys,
+				secrets.privateKeysRopsten,
 				`https://ropsten.infura.io/v3/${secrets.infuraKey}`,
 				0, // from address 0
-				3,  // to address 3
+				2, // to address 2
 			),
 			network_id: 3,
 		},

@@ -44,11 +44,20 @@ const getContracts = async (web3: any) => {
 	//const deployedContract = Dex.networks[networkId];
 
 	// DEX contract
+	/*
 	const deployedContract = Dex.networks['5777'];
 	const dex = new web3.eth.Contract(
 		Dex.abi,
 		deployedContract && deployedContract.address,
 	);
+	*/
+
+	// DEX contract (Ropsten, manually added)
+	const dex = new web3.eth.Contract(
+		Dex.abi,
+		'0x58CF175dF06cF7C5A83D2c0b939b5Ac9228750ef',
+	);
+
 	// ERC20 token contracts
 	const tokens = await dex.methods.getTokens().call();
 	const tokenContracts = tokens.reduce((acc: any, token: any) => ({ // return

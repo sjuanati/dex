@@ -74,6 +74,7 @@ const App = ({
 		})
 			.on('data', (newTrade: any) => {
 				// Avoid duplicated values from the same trade event
+				console.log('tradeIds: ', tradeIds);
 				if (tradeIds.has(newTrade.returnValues.tradeId)) return;
 				tradeIds.add(newTrade.returnValues.tradeId);
 				setTrades((trades: any) => ([...trades, newTrade.returnValues]));
@@ -86,19 +87,32 @@ const App = ({
 	};
 
 	const deposit = async (amount: number) => {
+		// Approve amount
 		await contracts[user.selectedToken.ticker].methods
 			.approve(contracts.dex.options.address, amount)
-			.send({ from: user.accounts[0] });
+			.send({ from: user.accounts[0] })
+			.on('error', (err: any) => {
+				console.log('Error in Approve: ', err);
+				return;
+			});
+		// Send amount
 		await contracts.dex.methods
 			.deposit(
 				amount,
 				web3.utils.fromAscii(user.selectedToken.ticker)
 			)
-			.send({ from: user.accounts[0] });
+			.send({ from: user.accounts[0] })
+			.on('error', (err: any) => {
+				console.log('Error in Send: ', err);
+				console.log('Details: ', err.value);
+				return;
+			});
+		// Update balances
 		const balances = await getBalances(
 			user.accounts[0],
 			user.selectedToken
 		);
+		// Update balances in state
 		setUser(user => ({ ...user, balances }));
 	};
 
@@ -142,47 +156,74 @@ const App = ({
 		setOrders(orders);
 	};
 
+	// React.useEffect(() => {
+	// 	const init = async () => {
+	// 		console.log('a')
+	// 		const rawTokens = await contracts.dex.methods.getTokens().call();
+	// 		const tokens = rawTokens.map((token: Token) => ({
+	// 			...token,
+	// 			ticker: web3.utils.hexToUtf8(token.ticker)
+	// 		}));
+	// 		// const balances = await getBalances(accounts[0], tokens[0]);
+	// 		// const orders = await getOrders(tokens[0])
+	// 		// Optimisation:
+	// 		const [balances, orders] = await Promise.all([
+	// 			getBalances(accounts[0], tokens[0]),
+	// 			getOrders(tokens[0])
+	// 		]);
+	// 		listenToTrades(tokens[0]);
+	// 		setTokens(tokens);
+	// 		setUser({ accounts, balances, selectedToken: tokens[0] });
+	// 		setOrders(orders);
+	// 	};
+	// 	init();
+	// }, []);
+
+	// /* listener.unsubscribe() IS PENDING (!) */
+	// React.useEffect(() => {
+	// 	const init = async () => {
+	// 		console.log('b')
+	// 		const [balances, orders] = await Promise.all([
+	// 			getBalances(user.accounts[0], user.selectedToken),
+	// 			getOrders(user.selectedToken)
+	// 		]);
+	// 		/* To be reviewed */
+	// 		//if (typeof listener !== 'undefined') listener!.unsubscribe();
+	// 		listenToTrades(user.selectedToken);
+	// 		setUser(user => ({ ...user, balances }))
+	// 		setOrders(orders);
+	// 	};
+	// 	if (user.selectedToken.ticker !== '') {
+	// 		init();
+	// 	};
+	// 	// return () => {listener.unsubscribe();}
+	// }, [user.selectedToken]);
+
 	React.useEffect(() => {
 		const init = async () => {
-			const rawTokens = await contracts.dex.methods.getTokens().call();
-			const tokens = rawTokens.map((token: Token) => ({
-				...token,
-				ticker: web3.utils.hexToUtf8(token.ticker)
-			}));
-			// const balances = await getBalances(accounts[0], tokens[0]);
-			// const orders = await getOrders(tokens[0])
-			// Optimisation:
-			const [balances, orders] = await Promise.all([
-				getBalances(accounts[0], tokens[0]),
-				getOrders(tokens[0])
-			]);
-			listenToTrades(tokens[0]);
-			setTokens(tokens);
-			setUser({ accounts, balances, selectedToken: tokens[0] });
+			let balances: any, orders: any;
+			if (typeof listener === 'undefined' && user.selectedToken.ticker === '') {
+				const rawTokens = await contracts.dex.methods.getTokens().call();
+				const tokens = rawTokens.map((token: Token) => ({
+					...token,
+					ticker: web3.utils.hexToUtf8(token.ticker)
+				}));
+				balances = await getBalances(accounts[0], tokens[0]);
+				orders = await getOrders(tokens[0]);
+				setUser({ accounts, balances, selectedToken: tokens[0] });
+				setTokens(tokens);
+			} else {
+				balances = await getBalances(accounts[0], user.selectedToken);
+				orders = await getOrders(user.selectedToken);
+				listenToTrades(user.selectedToken);
+				setUser(user => ({ ...user, balances }));
+			};
 			setOrders(orders);
 		};
 		init();
-	}, []);
-
-	/* listener.unsubscribe() IS PENDING (!) */
-	React.useEffect(() => {
-		const init = async () => {
-			const [balances, orders] = await Promise.all([
-				getBalances(user.accounts[0], user.selectedToken),
-				getOrders(user.selectedToken)
-			]);
-			/* To be reviewed */
-			//if (typeof listener !== 'undefined') listener!.unsubscribe();
-			listenToTrades(user.selectedToken);
-			setUser(user => ({ ...user, balances }))
-			setOrders(orders);
-		};
-		if (user.selectedToken.ticker !== '') {
-			init();
-		};
-		// return () => {listener.unsubscribe();}
 	}, [user.selectedToken]);
 
+	// Show loading screen is no token is selected
 	if (user.selectedToken.ticker === '') {
 		return <div>Loading...</div>;
 	};
