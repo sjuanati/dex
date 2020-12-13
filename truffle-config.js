@@ -5,7 +5,6 @@ const secrets = JSON.parse(
 	fs.readFileSync('.secrets.json').toString().trim()
 );
 
-
 module.exports = {
 	networks: {
 		development: {
@@ -18,23 +17,26 @@ module.exports = {
 			port: 7545,
 			network_id: "5777",
 		},
-		kovan: {
-			provider: () => new provider(
-				secrets.privateKeysKovan,
-				`https://kovan.infura.io/v3/${secrets.infuraKey}`,
-				0, // from address 0
-				3,  // to address 3
-			),
-			network_id: 42,
-		},
 		ropsten: {
 			provider: () => new provider(
 				secrets.privateKeysRopsten,
 				`https://ropsten.infura.io/v3/${secrets.infuraKey}`,
-				0, // from address 0
-				2, // to address 2
 			),
 			network_id: 3,
+		},
+		rinkeby: {
+			provider: () => new provider(
+				secrets.privateKeysRinkeby,
+				`https://rinkeby.infura.io/v3/${secrets.infuraKey}`,
+			),
+			network_id: 4,
+		},
+		kovan: {
+			provider: () => new provider(
+				secrets.privateKeysKovan,
+				`https://kovan.infura.io/v3/${secrets.infuraKey}`,
+			),
+			network_id: 42,
 		},
 	},
 

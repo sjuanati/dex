@@ -53,7 +53,7 @@ export interface Trade {
     amount: number,
     price: number,
     date: string
-}
+};
 
 export interface DropdownItem {
     label: string,
@@ -63,4 +63,4 @@ export interface DropdownItem {
 export interface Type {
     LIMIT: string,
     MARKET: string
-}
+};
