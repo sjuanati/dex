@@ -50,13 +50,13 @@ module.exports = async (deployer, network) => {
 /*
    Rinkeby
    ---------------
-   > transaction hash:    0x25096f2ed1abffa7846d0caa394b507249f3b2d0ebeb43b5507e8bb702de112b
-   > Blocks: 1            Seconds: 9
-   > contract address:    0x59F7b932181F93f7750da33b8284C85347cd1C46
-   > block number:        7713644
-   > block timestamp:     1607879823
+   > transaction hash:    0xb46f7662c84fd58cb05fc8abec9bca4f74df6521b2218c6bc35080db90a9cbfe
+   > Blocks: 1            Seconds: 5
+   > contract address:    0x8903500b2AeA79b4b0E95Bb3f05CCC7E7C946F69
+   > block number:        7713885
+   > block timestamp:     1607883453
    > account:             0xb5bE4d2510294d0BA77214F26F704d2956a99072
-   > balance:             74.94000201
+   > balance:             74.81023461
    > gas used:            2958897 (0x2d2631)
    > gas price:           20 gwei
    > value sent:          0 ETH

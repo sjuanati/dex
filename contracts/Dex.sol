@@ -89,7 +89,6 @@ contract Dex {
         require(traderBalances[msg.sender][_ticker] >= _amount, 'balance too low');
         traderBalances[msg.sender][_ticker] = traderBalances[msg.sender][_ticker].sub(_amount);
         IERC20(tokens[_ticker].tokenAddress).transfer(msg.sender, _amount);
-
     }
     
     function createLimitOrder(bytes32 _ticker, uint256 _amount, uint256 _price, Side _side) external tokenExists(_ticker) tokenIsNotDai(_ticker){
